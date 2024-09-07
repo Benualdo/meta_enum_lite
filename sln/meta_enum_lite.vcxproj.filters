@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="meta_enum_lite.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="meta_enum_lite">
+      <UniqueIdentifier>{fdf42431-6af4-46a8-87e8-e5a5300e4e9f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\meta_enum.hpp">
+      <Filter>meta_enum_lite</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

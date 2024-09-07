@@ -1,0 +1,10 @@
+.vs
+sln/meta_enum_lite/*
+sln/enc_temp_folder/*
+*.user
+*.ilk
+*.pdb
+*.exe
+
+
+

@@ -84,12 +84,14 @@ when the code actually used them.
 
 Compilation times were now down to **42s** (*)
 
-| Enum reflection  | Total compile time | Delta	 												
-| ---------------- | ------------------------------------------------------------- 
+
+| Enum reflection  | Total compile time | Delta
+| ---------------- | -------------------------------------------------------------
 | Disabled         | 36s                | -
 | magic_enum       | 77s                | +113%
 | meta_enum        | 56s                | +55%
 | meta_enum_lite   | 42s                | +16%
+
 
 (*) *Measured on a 7800X3D CPU*
 

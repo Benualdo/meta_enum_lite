@@ -13,4 +13,7 @@
       <Filter>meta_enum_lite</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
+  </ItemGroup>
 </Project>

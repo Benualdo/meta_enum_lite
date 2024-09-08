@@ -14,13 +14,22 @@ void debugPrint(const char * _format, ...)
     va_end(args);
 }
 
-meta_enum(Amiga, int, Amiga600 = 0x68000, Amiga1200 = 0x68020);
+namespace test
+{
+    meta_enum(MyEnum, int, A = 65, B = 66, C = 67);
+}
 
 int main()
 {
     debugPrint("*** meta_enum_lite tests begin ***\n");
+    {
+        const auto & members = getEnumMembers<test::MyEnum>();
+        for (auto i = 0; i < members.size(); ++i)
+            debugPrint("#%u %.*s = %u\n", i, members[i].name.size(), members[i].name.data(), members[i].value);
 
-    debugPrint("Amiga_meta.string = \"%s\"\n", ((std::string)Amiga_meta.string).c_str());
+        debugPrint("(string) test::MyEnum::A = \"%s\"\n", getEnumString(test::MyEnum::A).c_str());
 
+        debugPrint("getEnumValue<%s>(0) = %u\n", getEnumString(getEnumValue<test::MyEnum>(0)).c_str(), getEnumValue<test::MyEnum>(0));
+    }
     debugPrint("*** meta_enum_lite tests end ***\n");
 }

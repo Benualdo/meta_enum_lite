@@ -1,3 +1,105 @@
+# Meta Enum Lite - Static reflection on enums in C++17
+
+## Brief
+
+I adapted [Meta Enum](https://github.com/therocode/meta_enum) for the needs of [vgframework](https://github.com/vimontgames/vgframework) 
+with the following goals:
+
+- More template-friendly
+- Faster compilation times
+
+## History
+
+In my pet engine project, [vgframework](https://github.com/vimontgames/vgframework), I was initially using 
+[magic_enum](https://github.com/Neargye/magic_enum) until I realized my program was compiling more than **twice** as fast if I removed 
+magic_enum (36s vs 1m16s).
+
+So I was looking for an alternative solution, and amongst others I found meta_enum but I wanted to be able use templates to retrieve
+enum reflection data like this:
+
+``` debugPrint("MyEnum::A = \"%s\"\n", getEnumString(test::MyEnum::A).c_str()); ```
+
+## More template-friendly
+
+Compared to original meta_enum, the macro now also declares a traits struct so that we can get the *enum*_meta from enum typename: 
+
+``` 
+#define meta_enum(Type, UnderlyingType, ...)\
+[...]
+template <> struct ::MetaEnumTraits<Type>\
+{\
+    static const inline MetaEnum<Type, std::underlying_type_t<Type>, Type##_meta.members.size()> Meta = Type##_meta;\
+};
+``` 
+
+Then to get metadata object associated to an enum type we just need to use
+```
+MetaEnumTraits<Type>::Meta
+```
+
+This way, it's possible to implement functions that does not require to specify the meta object name.
+
+### getEnumString
+``` 
+template <typename Type> constexpr const size_t getEnumSize()
+{
+    return MetaEnumTraits<Type>::Meta.members.size();
+}
+``` 
+
+### getEnumString
+``` 
+template <typename Type> constexpr const std::string getEnumString(Type e)
+{
+    const auto & members = getEnumMembers<Type>();
+    for (auto i = 0; i < members.size(); ++i)
+    {
+        const auto & member = members[i];
+        if (member.value == e)
+            return std::string(member.name.data(), member.name.size());
+    }
+    return std::string{};
+}
+``` 
+
+### getEnumValue
+``` 
+template <typename Type> constexpr Type getEnumValue(unsigned int index)
+{
+    const auto & members = getEnumMembers<Type>();
+    if (index < members.size())
+        return members[index].value;
+    else
+        return (Type)0;
+}
+``` 
+
+## Faster compilation times
+
+Once I replaced magic_enum with meta_enum, compilation times went down from **1m17s** to **56s**. Not bad, but still far from **36s**.
+So I removed #includes to <array> and <string_view> from the header and used minimal containers mimicing the same features instead.
+
+I also removed a lot of funcs that we generated from the macro to replace them with the template versions that are instanciated 
+when the code actually used them.
+
+Compilation times were now down to **46s** (*)
+
+| Enum reflection  | Total compile time | Delta	 												
+| ---------------- | ------------------------------------------------------------- 
+| Disabled         | 36s                | -
+| magic_enum       | 77s                | +113%
+| meta_enum        | 56s                | +55%
+| meta_enum_lite   | 46s                | +27%
+
+(*) *Measured on a 7800X3D CPU*
+
+![Screenshot](img/meme.jpg)
+
+***
+*Original Meta Enum README.txt following:*
+***
+
+
 # Meta Enum - Static reflection on enums in C++17
 
 ## Brief

@@ -85,7 +85,7 @@ when the code actually used them.
 Compilation times were now down to **42s** for DX12 debug build, on a 7800X3D CPU
 
 | Enum reflection  | Total compile time | Delta
-| ---------------- | -------------------------------------------------------------
+| ---------------- | -------------------| ------------------------------------------
 | Disabled         | 36s                | -
 | magic_enum       | 77s                | +113%
 | meta_enum        | 56s                | +55%

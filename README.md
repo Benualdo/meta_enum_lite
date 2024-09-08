@@ -82,8 +82,7 @@ So I removed #includes to <array> and <string_view> from the header and used min
 I also removed a lot of funcs that we generated from the macro to replace them with the template versions that are instanciated 
 when the code actually used them.
 
-Compilation times were now down to **42s** (*)
-
+Compilation times were now down to **42s** for DX12 debug build, on a 7800X3D CPU
 
 | Enum reflection  | Total compile time | Delta
 | ---------------- | -------------------------------------------------------------
@@ -92,13 +91,9 @@ Compilation times were now down to **42s** (*)
 | meta_enum        | 56s                | +55%
 | meta_enum_lite   | 42s                | +16%
 
-
-(*) *Measured on a 7800X3D CPU*
-
 ***
 *Original Meta Enum README.md following:*
 ***
-
 
 # Meta Enum - Static reflection on enums in C++17
 
